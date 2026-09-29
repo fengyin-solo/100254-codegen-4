@@ -21,6 +21,8 @@ const Fault = () => import('@/views/fault/index.vue')
 const Tool = () => import('@/views/tool/index.vue')
 const Regulation = () => import('@/views/regulation/index.vue')
 const Training = () => import('@/views/training/index.vue')
+const Encroachment = () => import('@/views/encroachment/index.vue')
+const EncroachmentDetail = () => import('@/views/encroachment/detail.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -46,7 +48,13 @@ const router = createRouter({
     { path: '/tool', name: 'tool', component: Tool },
     { path: '/regulation', name: 'regulation', component: Regulation },
     { path: '/training', name: 'training', component: Training },
+    { path: '/encroachment', name: 'encroachment', component: Encroachment },
+    { path: '/encroachment/groups/:id', name: 'encroachment-detail', component: EncroachmentDetail },
   ],
+  scrollBehavior(_to, _from, savedPosition) {
+    if (savedPosition) return savedPosition
+    return { top: 0 }
+  },
 })
 
 export default router

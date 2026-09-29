@@ -268,3 +268,21 @@ class TrainingEntry(BaseModel):
     field_5: str | None = None  # 考核方式
     field_6: str | None = None  # 考核结果
     field_7: str | None = None  # 培训状态
+
+
+class EncroachmentPage(BaseModel):
+    """沿线侵限定位结果：除分页数据外，同时返回剔除、合并与台账对账信息。"""
+
+    items: list[dict[str, Any]]
+    total: int
+    page: int = 1
+    size: int = 20
+    ledger_total: int
+    valid_total: int
+    grouped_total: int
+    merged_count: int
+    excluded_total: int
+    retained_pending_count: int = 0
+    excluded: list[dict[str, Any]] = Field(default_factory=list)
+    applied_conditions: dict[str, Any] = Field(default_factory=dict)
+    balance: dict[str, Any] = Field(default_factory=dict)
