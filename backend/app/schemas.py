@@ -21,6 +21,25 @@ class ActionResult(BaseModel):
     entry: dict[str, Any] | None = None
 
 
+class IntrusionLedgerResult(BaseModel):
+    """沿线侵限台账：过滤结果之外，始终带剔除清单与对账数字。"""
+
+    items: list[dict[str, Any]]
+    total: int
+    page: int = 1
+    size: int = 20
+    filtered_total: int = 0
+    valid_count: int = 0
+    kept_count: int = 0
+    merged_count: int = 0
+    excluded_count: int = 0
+    excluded_items: list[dict[str, Any]] = Field(default_factory=list)
+    out_scope_pending: int = 0
+    reconciled: bool = True
+    filters_applied: dict[str, Any] = Field(default_factory=dict)
+    warnings: list[str] = Field(default_factory=list)
+
+
 class EntryPayload(BaseModel):
     """登记或修改一条业务记录时提交的字段集合。"""
 
@@ -268,3 +287,17 @@ class TrainingEntry(BaseModel):
     field_5: str | None = None  # 考核方式
     field_6: str | None = None  # 考核结果
     field_7: str | None = None  # 培训状态
+
+class IntrusionEntry(BaseModel):
+    """沿线侵限台账明细结构。"""
+
+    field_0: str | None = None  # 台账编号
+    field_1: str | None = None  # 所属区间
+    field_2: str | None = None  # 里程
+    field_3: str | None = None  # 侧别
+    field_4: str | None = None  # 外部干扰源
+    field_5: str | None = None  # 干扰类型
+    field_6: str | None = None  # 侵限尺寸
+    field_7: str | None = None  # 发现日期
+    field_8: str | None = None  # 现场描述
+    field_9: str | None = None  # 处理状态

@@ -60,6 +60,7 @@ npm run dev
 | 计轴设备 | `axlecounter` | 计轴器 | 计轴器编号、所属区间、检测磁头 |
 | 调度中心 | `dispatchcenter` | 调度台 | 调度台编号、管辖范围、显示设备 |
 | 天窗修作业 | `maintenancewindow` | 天窗计划 | 计划编号、作业日期、作业区间 |
+| 沿线侵限 | `intrusion` | 外部干扰源侵限台账 | 台账编号、所属区间、里程、外部干扰源 |
 | 继电器检修 | `relay` | 继电器 | 继电器编号、继电器型号、所属设备 |
 | 熔断器管理 | `fuse` | 熔断器 | 熔断器编号、额定电流、安装位置 |
 | 防雷元件 | `lightning` | 防雷元件 | 元件编号、安装位置、防护等级 |
@@ -76,3 +77,18 @@ npm run dev
   `backend/app/routers/<模块>.py`，业务规则在 `backend/app/services/<模块>.py`。
 - 列表接口统一返回 `{ items, total, page, size }`，动作接口统一返回 `{ ok, message }`。
 - 状态流转只允许在 `app/services` 里改，路由层不做业务判断。
+
+## 沿线侵限台账（intrusion）
+
+侵限台账在标准列表之外多了定位、合并与剔除口径：
+
+- 定位：`GET /api/intrusion` 支持 `mileage`+`radius`（里程定位，默认半径 500 米）、
+  `mileage_from`/`mileage_to`（里程区间）、`section`（区间号子串），里程写法为 `K33+250`。
+- 合并：同一外部干扰源在同一里程的重复登记按位置合并成一条，原始记录在详情页与
+  `merged_from`/`members` 中可查，动作对整组生效。
+- 剔除：所属区间缺失、里程缺失或无法识别的条目不参与定位，在 `excluded_items` 中逐条
+  给出原因；对账等式 `total = valid_count + excluded_count`，由 `reconciled` 标识。
+- 范围外待处理：启用定位条件时，不在范围内但仍为「待处理/处理中」的条目照样返回，
+  `out_of_scope=true`，防止换了里程范围后漏办。
+- 条件未生效：无法解析的里程不会静默忽略，会在 `warnings` 里说明是哪个条件未生效；
+  前端读取出错时展示重试入口并复述未生效的条件。

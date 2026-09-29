@@ -12,6 +12,8 @@ const Balise = () => import('@/views/balise/index.vue')
 const Axlecounter = () => import('@/views/axlecounter/index.vue')
 const Dispatchcenter = () => import('@/views/dispatchcenter/index.vue')
 const Maintenancewindow = () => import('@/views/maintenancewindow/index.vue')
+const IntrusionLedger = () => import('@/views/intrusion/index.vue')
+const IntrusionDetail = () => import('@/views/intrusion/detail.vue')
 const Relay = () => import('@/views/relay/index.vue')
 const Fuse = () => import('@/views/fuse/index.vue')
 const Lightning = () => import('@/views/lightning/index.vue')
@@ -37,6 +39,8 @@ const router = createRouter({
     { path: '/axlecounter', name: 'axlecounter', component: Axlecounter },
     { path: '/dispatchcenter', name: 'dispatchcenter', component: Dispatchcenter },
     { path: '/maintenancewindow', name: 'maintenancewindow', component: Maintenancewindow },
+    { path: '/intrusion', name: 'intrusion', component: IntrusionLedger },
+    { path: '/intrusion/:id', name: 'intrusion-detail', component: IntrusionDetail },
     { path: '/relay', name: 'relay', component: Relay },
     { path: '/fuse', name: 'fuse', component: Fuse },
     { path: '/lightning', name: 'lightning', component: Lightning },
